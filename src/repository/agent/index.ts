@@ -3,9 +3,11 @@ import { PorpertyAgent } from '../../models/agent/PropertyAgent';
 import { Property } from '../../models/agent/Property';
 import { Tenant } from '../../models/agent/Tenants';
 import { Note } from '../../models/agent/Note';
+
 const propertyAgentDb = new InMemoryDatabase<PorpertyAgent>();
 const propertyDb = new InMemoryDatabase<Property>();
 const tenantDb = new InMemoryDatabase<Tenant>();
+
 const noteDb = new InMemoryDatabase<Note>();
 export class AllInOneRepository {
   // PropertyAgent CRUD Operations
@@ -95,6 +97,9 @@ export class AllInOneRepository {
     },
     findByPropertyId: (propertyId: string): Note[] => {
       return noteDb.getAll().filter((note) => note.propertyId === propertyId);
+    },
+    findByAgentId: (agentId: string): Note[] => {
+      return noteDb.getAll().filter((note) => note.agentID === agentId);
     },
     update: (id: string, updatedNote: Partial<Note>): void => {
       const note = noteDb.get(id);
