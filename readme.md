@@ -12,19 +12,22 @@ This project is a simple Notes Management API built with NestJS. It is designed 
 ## Installation
 
 1. Clone the repository:
+
    ```bash
    git clone <repository-url>
    cd nest-pure-interview
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Start the application:
+
    ```bash
-   npm run start
+   npm run start:dev
    ```
 
 4. The API will be available at `http://localhost:3000`.
@@ -36,6 +39,7 @@ This project is a simple Notes Management API built with NestJS. It is designed 
 - **Create a Note**  
   `POST /notes`  
   Request Body:
+
   ```json
   {
     "agentID": "string",
@@ -53,6 +57,7 @@ This project is a simple Notes Management API built with NestJS. It is designed 
 - **Update a Note**  
   `PUT /notes/:id`  
   Request Body:
+
   ```json
   {
     "agentID": "string",
@@ -63,6 +68,48 @@ This project is a simple Notes Management API built with NestJS. It is designed 
 
 - **Delete a Note**  
   `DELETE /notes/:id`
+
+### Agent
+
+- **Create a Agent**  
+  `POST /agent`  
+  Request Body:
+
+  ```json
+  {
+    "id": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "email": "string (valid email format)",
+    "mobileNumber": "string"
+  }
+  ```
+
+- **Get All Agents**  
+  `GET /agent`
+
+- **Get All Agent with its related tables/entities by ID**  
+  `GET /erged-objects/:id`
+
+- **Get Agent by ID**  
+  `GET /agent/:id`
+
+- **Update an Agent**  
+  `PUT /agent/:id`  
+  Request Body:
+
+  ```json
+  {
+    "id": "string", // recommended.
+    "firstName": "string", //optional
+    "lastName": "string", //optional
+    "email": "string (valid email format)", //optional
+    "mobileNumber": "string" //optional
+  }
+  ```
+
+- **Delete an Agent**  
+  `DELETE /agent/:id`
 
 ## Security Limitations
 
@@ -97,14 +144,17 @@ If this application is to be used in a production environment, the following sec
    Use HTTPS to encrypt data in transit.
 
 ## Entity Relationship Diagram (ERD)
+
 ![Entity Relationship Diagram](./entity-relationship-diagram.jpg)
 
 ## 📘 Entities and Relationships
 
 ### 1. **PropertyAgent**
+
 Represents agents who manage properties.
 
 **Fields:**
+
 - `UniqueID` (PK)
 - `firstName` (string)
 - `lastName` (string)
@@ -114,15 +164,18 @@ Represents agents who manage properties.
 - `updatedAt` (date)
 
 **Relationships:**
+
 - One agent can manage **many properties** (1:N)
 - One agent can write **many notes** (1:N)
 
 ---
 
 ### 2. **Property**
+
 Represents the properties being managed.
 
 **Fields:**
+
 - `UniqueID` (PK)
 - `agentId` (FK → PropertyAgent)
 - `address` (string)
@@ -131,6 +184,7 @@ Represents the properties being managed.
 - `updatedAt` (date)
 
 **Relationships:**
+
 - Each property belongs to **one agent** (N:1)
 - One property can have **many tenants** (1:N)
 - One property can have **many notes** (1:N)
@@ -138,9 +192,11 @@ Represents the properties being managed.
 ---
 
 ### 3. **Tenant**
+
 Represents individuals renting a property.
 
 **Fields:**
+
 - `UniqueID` (PK)
 - `propertyId` (FK → Property)
 - `firstName` (string)
@@ -152,14 +208,17 @@ Represents individuals renting a property.
 - `updatedAt` (date)
 
 **Relationships:**
+
 - Each tenant is associated with **one property** (N:1)
 
 ---
 
 ### 4. **Note**
+
 Represents notes made by agents for properties.
 
 **Fields:**
+
 - `UniqueID` (PK)
 - `agentID` (FK → PropertyAgent)
 - `propertyID` (FK → Property)
@@ -168,12 +227,14 @@ Represents notes made by agents for properties.
 - `updatedAt` (date)
 
 **Relationships:**
+
 - Each note is written by **one agent** (N:1)
 - Each note is linked to **one property** (N:1)
 
 ---
 
 ## 📌 Notes:
+
 - `PK` = Primary Key
 - `FK` = Foreign Key
 - `str` = String data type
