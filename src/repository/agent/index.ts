@@ -3,107 +3,107 @@ import { PorpertyAgent } from '../../models/agent/PropertyAgent';
 import { Property } from '../../models/agent/Property';
 import { Tenant } from '../../models/agent/Tenants';
 import { Note } from '../../models/agent/Note';
-
-export class Repository {
-  private propertyAgentDb = new InMemoryDatabase<PorpertyAgent>();
-  private propertyDb = new InMemoryDatabase<Property>();
-  private tenantDb = new InMemoryDatabase<Tenant>();
-  private noteDb = new InMemoryDatabase<Note>();
-
+const propertyAgentDb = new InMemoryDatabase<PorpertyAgent>();
+const propertyDb = new InMemoryDatabase<Property>();
+const tenantDb = new InMemoryDatabase<Tenant>();
+const noteDb = new InMemoryDatabase<Note>();
+export class AllInOneRepository {
   // PropertyAgent CRUD Operations
   PropertyAgent = {
     create: (agent: PorpertyAgent): void => {
-      this.propertyAgentDb.set(agent.id, agent);
+      propertyAgentDb.set(agent.id, agent);
     },
     findById: (id: string): PorpertyAgent | undefined => {
-      return this.propertyAgentDb.get(id);
+      return propertyAgentDb.get(id);
     },
     findAll: (): PorpertyAgent[] => {
-      return this.propertyAgentDb.getAll();
+      return propertyAgentDb.getAll();
     },
     update: (id: string, updatedAgent: Partial<PorpertyAgent>): void => {
-      const agent = this.propertyAgentDb.get(id);
+      const agent = propertyAgentDb.get(id);
       if (agent) {
-        this.propertyAgentDb.set(id, { ...agent, ...updatedAgent });
+        propertyAgentDb.set(id, { ...agent, ...updatedAgent });
       }
     },
-    delete: (id: string): void => {
-      this.propertyAgentDb.delete(id);
+    delete: (id: string): boolean => {
+      propertyAgentDb.delete(id);
+      // We will assume that this is operation always succeeds.
+      return true;
     },
   };
 
   // Property CRUD Operations
   Property = {
     create: (property: Property): void => {
-      this.propertyDb.set(property.id, property);
+      propertyDb.set(property.id, property);
     },
     findById: (id: string): Property | undefined => {
-      return this.propertyDb.get(id);
+      return propertyDb.get(id);
     },
     findAll: (): Property[] => {
-      return this.propertyDb.getAll();
+      return propertyDb.getAll();
     },
     findByAgentId: (agentId: string): Property[] => {
-      return this.propertyDb.getAll().filter((property) => property.agentId === agentId);
+      return propertyDb.getAll().filter((property) => property.agentId === agentId);
     },
     update: (id: string, updatedProperty: Partial<Property>): void => {
-      const property = this.propertyDb.get(id);
+      const property = propertyDb.get(id);
       if (property) {
-        this.propertyDb.set(id, { ...property, ...updatedProperty });
+        propertyDb.set(id, { ...property, ...updatedProperty });
       }
     },
     delete: (id: string): void => {
-      this.propertyDb.delete(id);
+      propertyDb.delete(id);
     },
   };
 
   // Tenant CRUD Operations
   Tenant = {
     create: (tenant: Tenant): void => {
-      this.tenantDb.set(tenant.id, tenant);
+      tenantDb.set(tenant.id, tenant);
     },
     findById: (id: string): Tenant | undefined => {
-      return this.tenantDb.get(id);
+      return tenantDb.get(id);
     },
     findAll: (): Tenant[] => {
-      return this.tenantDb.getAll();
+      return tenantDb.getAll();
     },
     findByPropertyId: (propertyId: string): Tenant[] => {
-      return this.tenantDb.getAll().filter((tenant) => tenant.propertyId === propertyId);
+      return tenantDb.getAll().filter((tenant) => tenant.propertyId === propertyId);
     },
     update: (id: string, updatedTenant: Partial<Tenant>): void => {
-      const tenant = this.tenantDb.get(id);
+      const tenant = tenantDb.get(id);
       if (tenant) {
-        this.tenantDb.set(id, { ...tenant, ...updatedTenant });
+        tenantDb.set(id, { ...tenant, ...updatedTenant });
       }
     },
     delete: (id: string): void => {
-      this.tenantDb.delete(id);
+      tenantDb.delete(id);
     },
   };
 
   // Note CRUD Operations
   Note = {
     create: (note: Note): void => {
-      this.noteDb.set(note.id, note);
+      noteDb.set(note.id, note);
     },
     findById: (id: string): Note | undefined => {
-      return this.noteDb.get(id);
+      return noteDb.get(id);
     },
     findAll: (): Note[] => {
-      return this.noteDb.getAll();
+      return noteDb.getAll();
     },
     findByPropertyId: (propertyId: string): Note[] => {
-      return this.noteDb.getAll().filter((note) => note.propertyId === propertyId);
+      return noteDb.getAll().filter((note) => note.propertyId === propertyId);
     },
     update: (id: string, updatedNote: Partial<Note>): void => {
-      const note = this.noteDb.get(id);
+      const note = noteDb.get(id);
       if (note) {
-        this.noteDb.set(id, { ...note, ...updatedNote });
+        noteDb.set(id, { ...note, ...updatedNote });
       }
     },
     delete: (id: string): void => {
-      this.noteDb.delete(id);
+      noteDb.delete(id);
     },
   };
 }
