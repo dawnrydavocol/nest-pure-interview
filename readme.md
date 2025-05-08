@@ -77,7 +77,6 @@ This project is a simple Notes Management API built with NestJS. It is designed 
 
   ```json
   {
-    "id": "string",
     "firstName": "string",
     "lastName": "string",
     "email": "string (valid email format)",
