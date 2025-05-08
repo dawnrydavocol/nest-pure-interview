@@ -1,4 +1,11 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateAgentDto } from './create-agent.dto';
+import { z } from 'zod';
 
-export class UpdateAgentDto extends PartialType(CreateAgentDto) {}
+export const UpdateAgentSchema = z.object({
+  id: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+  email: z.string().email(),
+  mobileNumber: z.string(),
+});
+
+export type UpdateAgentDto = z.infer<typeof UpdateAgentSchema>;

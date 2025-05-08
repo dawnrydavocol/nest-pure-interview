@@ -1,7 +1,11 @@
-export class CreateAgentDto {
-  id!: string;
-  firstName!: string;
-  lastName!: string;
-  email!: string;
-  mobileNumber!: string;
-}
+import { z } from 'zod';
+
+export const CreateAgentSchema = z.object({
+  id: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+  email: z.string().email(),
+  mobileNumber: z.string(),
+});
+
+export type CreateAgentDto = z.infer<typeof CreateAgentSchema>;
