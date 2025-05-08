@@ -19,16 +19,21 @@ export class AgentController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.agentService.findOne(id); // Changed from `+id` to `id` to match string type
+    return this.agentService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAgentDto: UpdateAgentDto) {
-    return this.agentService.update(id, updateAgentDto); // Changed from `+id` to `id`
+    return this.agentService.update(id, updateAgentDto);
+  }
+
+  @Get('merged-objects/:id')
+  findPropertiesByAgentId(@Param('id') id: string) {
+    return this.agentService.getMergedTables(id);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.agentService.remove(id); // Changed from `+id` to `id`
+    return this.agentService.remove(id);
   }
 }

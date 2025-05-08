@@ -3,6 +3,8 @@ import { CreateAgentDto } from './dto/create-agent.dto';
 import { UpdateAgentDto } from './dto/update-agent.dto';
 import { PorpertyAgent } from '../../models/agent/PropertyAgent';
 import { AllInOneRepository } from '../../repository/agent';
+import { ResAgentDto, ResPropertiesDto } from './dto/get-merged-agent-tables.dto';
+import { Property } from 'src/models/agent/Property';
 
 @Injectable()
 export class AgentService {
@@ -47,6 +49,48 @@ export class AgentService {
     };
     this.repository.PropertyAgent.update(id, updatedAgent);
     return updatedAgent;
+  }
+
+  private getMergedPropertiesTenants(properties: Property[]) {
+    const mergedProperties: ResPropertiesDto[] = [];
+
+    for (const property of properties) {
+      const tenants = this.repository.Tenant.findByPropertyId(property.id);
+
+      mergedProperties.push({
+        id: property.id,
+        agentId: property.agentId,
+        address: property.address,
+        notes: property.notes,
+        createdAt: property.createdAt,
+        updatedAt: property.updatedAt,
+        tenants: tenants,
+      });
+    }
+    return mergedProperties;
+  }
+
+  getMergedTables(agentID: string) {
+    const agent = this.repository.PropertyAgent.findById(agentID);
+
+    if (agent === undefined) {
+      throw new Error(`Agent with ID ${agentID} not found`);
+    }
+    const properties = this.repository.Property.findByAgentId(agentID);
+
+    const result: ResAgentDto = {
+      id: agent.id,
+      firstName: agent.firstName,
+      lastName: agent.lastName,
+      email: agent.email,
+      mobileNumber: agent.mobileNumber,
+      createdAt: agent.createdAt,
+      updatedAt: agent.updatedAt,
+      properties: this.getMergedPropertiesTenants(properties),
+      notes: this.repository.Note.findByAgentId(agentID),
+    };
+
+    return result;
   }
 
   remove(id: string) {
