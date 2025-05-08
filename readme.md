@@ -1,4 +1,4 @@
-# NestJS Notes Management API
+# Property Agent Management System
 
 This project is a simple Notes Management API built with NestJS. It is designed for technical interview tests and demonstrates the implementation of CRUD operations for managing notes, properties, agents, and tenants.
 
