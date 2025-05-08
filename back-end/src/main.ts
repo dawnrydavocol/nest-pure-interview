@@ -8,10 +8,12 @@ dotenv.config(); // Load environment variables
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const httpAdapter = app.get(HttpAdapterHost);
-
-  app.enableCors();
+  app.enableCors({
+    origin: 'http://localhost:5174',
+    credentials: true, // Allow cookies to be sent
+  });
   app.useGlobalFilters(new CatchEverythingFilter(httpAdapter));
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 5176);
 }
 bootstrap().catch((err) => {
   console.error('Error during application bootstrap:', err);
