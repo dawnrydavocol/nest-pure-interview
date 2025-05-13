@@ -144,7 +144,7 @@ If this application is to be used in a production environment, the following sec
 
 ## Entity Relationship Diagram (ERD)
 
-![Entity Relationship Diagram](./entity-relationship-diagram.jpg)
+![Entity Relationship Diagram](./back-end/entity-relationship-diagram.jpg)
 
 ## 📘 Entities and Relationships
 
